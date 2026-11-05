@@ -1,0 +1,12 @@
+{
+  "domain": "bibkat",
+  "name": "Bibkat",
+  "codeowners": ["@lbekel"],
+  "config_flow": true,
+  "documentation": "https://github.com/lbekel/ha-bibkat",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/lbekel/ha-bibkat/issues",
+  "requirements": [],
+  "version": "0.1.2"
+}

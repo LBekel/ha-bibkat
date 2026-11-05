@@ -1,0 +1,78 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Find your library",
+        "description": "Search for your Bibkat library. Polling only reads loans; renewals require an explicit action.",
+        "data": {"search": "Library name or town"},
+        "data_description": {"search": "For example: Baccum"}
+      },
+      "catalog": {
+        "title": "Select a library",
+        "data": {"catalog_id": "Library"},
+        "data_description": {"catalog_id": "Choose the library that issued your reader account."}
+      },
+      "account": {
+        "title": "Connect your reader account",
+        "description": "Credentials are stored in Home Assistant's local configuration. Protect your configuration and backups. Setup does not renew loans.",
+        "data": {"name": "Account label", "username": "Reader number", "password": "Password"},
+        "data_description": {
+          "name": "A label to distinguish family accounts; avoid putting the reader number here.",
+          "username": "Your library reader number, including any leading zeros.",
+          "password": "The password used to sign in to Bibkat."
+        }
+      },
+      "reauth_confirm": {
+        "title": "Reconnect your reader account",
+        "description": "Enter the current password for this account. Library, reader number and device identity stay unchanged.",
+        "data": {"password": "Password"},
+        "data_description": {"password": "The current password used to sign in to Bibkat."}
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot connect to Bibkat. Try again later.",
+      "invalid_auth": "Bibkat rejected the login or account access. Check your credentials and library access.",
+      "invalid_response": "Bibkat returned an unexpected or unsuccessful response. No empty loan list was assumed.",
+      "rate_limited": "Bibkat has limited requests. Wait before trying again.",
+      "no_catalogs": "No libraries found. Try a more specific name or a different town.",
+      "invalid_catalog": "Select a library from the search results."
+    },
+    "abort": {
+      "already_configured": "This reader account is already configured for this library.",
+      "reauth_successful": "The account has been reconnected."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "loans": {"name": "Borrowed media"},
+      "loan_list": {"name": "Loan list"},
+      "overdue": {"name": "Overdue media"},
+      "next_due": {"name": "Next return"}
+    },
+    "calendar": {
+      "returns": {"name": "Returns"}
+    }
+  },
+  "services": {
+    "renew": {
+      "name": "Renew medium",
+      "description": "Request one renewal and verify its new due date. Administrator access required. This changes the library account and never retries the renewal. Not yet live-verified.",
+      "fields": {
+        "config_entry_id": {"name": "Reader account", "description": "The Bibkat account that holds this loan."},
+        "medium_id": {"name": "Medium ID", "description": "Copy medium_id from the loans attribute, not the ISBN."},
+        "expected_due_date": {"name": "Current due date", "description": "Copy due_date from the loan. A changed date prevents a duplicate renewal."}
+      }
+    }
+  },
+  "exceptions": {
+    "account_not_loaded": {"message": "Select a loaded Bibkat reader account."},
+    "invalid_renewal_input": {"message": "A valid medium ID and current due date are required."},
+    "loan_not_found": {"message": "This medium is not uniquely identified in the account's current loans. No renewal was sent."},
+    "due_date_changed": {"message": "The due date has changed. Check the refreshed loan list. No renewal was sent."},
+    "not_renewable": {"message": "The library does not currently allow this loan to be renewed, or a request is pending. No renewal was sent."},
+    "renewal_unconfirmed": {"message": "The renewal could not be confirmed. It may already have been applied. Check the loan in Bibkat before any new attempt; the request was not repeated."},
+    "invalid_auth": {"message": "Bibkat authorization failed. Reauthenticate the reader account."},
+    "rate_limited": {"message": "Bibkat has limited requests. Updates have been delayed."},
+    "cannot_update": {"message": "Cannot update Bibkat loans. Data is unavailable until a successful update."}
+  }
+}

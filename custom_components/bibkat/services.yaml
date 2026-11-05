@@ -1,0 +1,28 @@
+renew:
+  name: Renew medium
+  description: >-
+    Request one renewal and verify the new due date. Requires administrator
+    access. Sends a real request to the library; never retries the renewal.
+    Not yet verified against a live renewal.
+  fields:
+    config_entry_id:
+      name: Reader account
+      description: Choose the Bibkat account that holds this loan.
+      required: true
+      selector:
+        config_entry:
+          integration: bibkat
+    medium_id:
+      name: Medium ID
+      description: Copy medium_id from this account's loans attribute, not the ISBN.
+      required: true
+      example: "123456"
+      selector:
+        text:
+    expected_due_date:
+      name: Current due date
+      description: Copy due_date from the loan. A changed date prevents a duplicate renewal.
+      required: true
+      example: "2026-11-15"
+      selector:
+        date:

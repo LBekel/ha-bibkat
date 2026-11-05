@@ -1,0 +1,78 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Bibliothek suchen",
+        "description": "Suche deine Bibkat-Bibliothek. Regelmäßige Abrufe lesen nur Ausleihen; Verlängerungen erfordern eine ausdrücklich aufgerufene Aktion.",
+        "data": {"search": "Bibliotheksname oder Ort"},
+        "data_description": {"search": "Zum Beispiel: Baccum"}
+      },
+      "catalog": {
+        "title": "Bibliothek auswählen",
+        "data": {"catalog_id": "Bibliothek"},
+        "data_description": {"catalog_id": "Wähle die Bibliothek, bei der dein Leserkonto geführt wird."}
+      },
+      "account": {
+        "title": "Leserkonto verbinden",
+        "description": "Die Zugangsdaten werden in der lokalen Home-Assistant-Konfiguration gespeichert. Schütze Konfiguration und Backups. Die Einrichtung verlängert keine Ausleihen.",
+        "data": {"name": "Kontobezeichnung", "username": "Lesernummer", "password": "Passwort"},
+        "data_description": {
+          "name": "Eine Bezeichnung für dieses Familienkonto; hier keine Lesernummer eintragen.",
+          "username": "Deine Lesernummer einschließlich führender Nullen.",
+          "password": "Das Passwort für die Anmeldung bei Bibkat."
+        }
+      },
+      "reauth_confirm": {
+        "title": "Leserkonto erneut verbinden",
+        "description": "Gib das aktuelle Passwort dieses Kontos ein. Bibliothek, Lesernummer und Gerätekennung bleiben unverändert.",
+        "data": {"password": "Passwort"},
+        "data_description": {"password": "Das aktuelle Passwort für die Anmeldung bei Bibkat."}
+      }
+    },
+    "error": {
+      "cannot_connect": "Bibkat ist nicht erreichbar. Versuche es später erneut.",
+      "invalid_auth": "Bibkat hat Anmeldung oder Kontozugriff abgelehnt. Prüfe Zugangsdaten und Bibliothekszugang.",
+      "invalid_response": "Bibkat hat eine unerwartete oder nicht erfolgreiche Antwort geliefert. Es wurde keine leere Ausleihliste angenommen.",
+      "rate_limited": "Bibkat begrenzt die Anfragen. Warte vor einem neuen Versuch.",
+      "no_catalogs": "Keine Bibliothek gefunden. Versuche einen genaueren Namen oder einen anderen Ort.",
+      "invalid_catalog": "Wähle eine Bibliothek aus den Suchergebnissen."
+    },
+    "abort": {
+      "already_configured": "Dieses Leserkonto ist für diese Bibliothek bereits eingerichtet.",
+      "reauth_successful": "Das Konto wurde erneut verbunden."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "loans": {"name": "Ausgeliehene Medien"},
+      "loan_list": {"name": "Ausleihliste"},
+      "overdue": {"name": "Überfällige Medien"},
+      "next_due": {"name": "Nächste Rückgabe"}
+    },
+    "calendar": {
+      "returns": {"name": "Rückgaben"}
+    }
+  },
+  "services": {
+    "renew": {
+      "name": "Medium verlängern",
+      "description": "Eine Verlängerung anfordern und das neue Rückgabedatum prüfen. Administratorrechte erforderlich. Ändert das Bibliothekskonto; keine automatische Wiederholung. Noch nicht live verifiziert.",
+      "fields": {
+        "config_entry_id": {"name": "Leserkonto", "description": "Das Bibkat-Konto, auf dem das Medium ausgeliehen ist."},
+        "medium_id": {"name": "Medien-ID", "description": "medium_id aus dem Attribut loans übernehmen, nicht die ISBN."},
+        "expected_due_date": {"name": "Bisheriges Rückgabedatum", "description": "due_date aus der Ausleihe übernehmen. Ein geändertes Datum verhindert eine doppelte Verlängerung."}
+      }
+    }
+  },
+  "exceptions": {
+    "account_not_loaded": {"message": "Wähle ein geladenes Bibkat-Leserkonto."},
+    "invalid_renewal_input": {"message": "Eine gültige Medien-ID und das bisherige Rückgabedatum sind erforderlich."},
+    "loan_not_found": {"message": "Das Medium ist in den aktuellen Ausleihen dieses Kontos nicht eindeutig vorhanden. Keine Verlängerung gesendet."},
+    "due_date_changed": {"message": "Das Rückgabedatum hat sich geändert. Prüfe die aktualisierte Ausleihliste. Keine Verlängerung gesendet."},
+    "not_renewable": {"message": "Die Bibliothek erlaubt derzeit keine Verlängerung dieser Ausleihe oder eine Anfrage ist noch offen. Keine Verlängerung gesendet."},
+    "renewal_unconfirmed": {"message": "Die Verlängerung konnte nicht bestätigt werden. Sie kann bereits erfolgt sein. Prüfe die Ausleihe in Bibkat vor einem neuen Versuch; die Anfrage wurde nicht wiederholt."},
+    "invalid_auth": {"message": "Bibkat hat den Zugriff abgelehnt. Melde das Leserkonto erneut an."},
+    "rate_limited": {"message": "Bibkat begrenzt die Anfragen. Die Aktualisierung wurde verschoben."},
+    "cannot_update": {"message": "Bibkat-Ausleihen konnten nicht aktualisiert werden. Die Daten sind bis zum nächsten erfolgreichen Abruf nicht verfügbar."}
+  }
+}
