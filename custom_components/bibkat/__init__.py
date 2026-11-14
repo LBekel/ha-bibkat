@@ -1,5 +1,8 @@
 """Set up Bibkat accounts and the explicit renewal action."""
 
+from pathlib import Path
+
+from homeassistant.components.http import StaticPathConfig
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, Platform
 from homeassistant.core import HomeAssistant
@@ -17,6 +20,15 @@ PLATFORMS = (Platform.SENSOR, Platform.CALENDAR)
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
+    await hass.http.async_register_static_paths(
+        [
+            StaticPathConfig(
+                "/bibkat",
+                str(Path(__file__).parent / "www"),
+                cache_headers=False,
+            )
+        ]
+    )
     async_setup_services(hass)
     return True
 

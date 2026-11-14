@@ -56,7 +56,7 @@
   "services": {
     "renew": {
       "name": "Medium verlängern",
-      "description": "Eine Verlängerung anfordern und das neue Rückgabedatum prüfen. Administratorrechte erforderlich. Ändert das Bibliothekskonto; keine automatische Wiederholung. Noch nicht live verifiziert.",
+      "description": "Eine Verlängerung anfordern und das neue Rückgabedatum prüfen. Administratorrechte erforderlich. Ändert das Bibliothekskonto; keine automatische Wiederholung. Experimentell; mit der Bücherei Baccum getestet.",
       "fields": {
         "config_entry_id": {"name": "Leserkonto", "description": "Das Bibkat-Konto, auf dem das Medium ausgeliehen ist."},
         "medium_id": {"name": "Medien-ID", "description": "medium_id aus dem Attribut loans übernehmen, nicht die ISBN."},

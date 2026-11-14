@@ -3,7 +3,7 @@ renew:
   description: >-
     Request one renewal and verify the new due date. Requires administrator
     access. Sends a real request to the library; never retries the renewal.
-    Not yet verified against a live renewal.
+    Experimental; verified with the Baccum library.
   fields:
     config_entry_id:
       name: Reader account

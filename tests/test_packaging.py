@@ -48,6 +48,15 @@ def test_manifest_and_hacs_metadata():
     )
 
 
+def test_custom_dashboard_card_is_included():
+    card = (INTEGRATION / "www" / "bibkat-loans-card.js").read_text(
+        encoding="utf-8"
+    )
+    assert 'const CARD_TYPE = "bibkat-loans-card";' in card
+    assert "customElements.define(CARD_TYPE, BibkatLoansCard);" in card
+    assert 'customElements.define("bibkat-loans-card-editor"' in card
+
+
 def test_renewal_action_fields_match_translations():
     services = yaml.safe_load((INTEGRATION / "services.yaml").read_text())
     translations = json.loads((INTEGRATION / "strings.json").read_text())
