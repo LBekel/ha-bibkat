@@ -8,11 +8,6 @@ This project is independent of Bibkat and the library software provider.
 It uses an undocumented API; changes to the service may break the integration.
 Compatibility with all libraries is not guaranteed.
 
-> **Renewals: experimental.** The request and response format was reconstructed
-> from the Android client. A real renewal has been verified with the Baccum
-> library; behavior may differ at other libraries.
-> Calling `bibkat.renew` changes the library account.
-
 ## Features
 
 - UI-based setup with library search and reader account credentials.
