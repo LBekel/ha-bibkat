@@ -6,17 +6,19 @@ from homeassistant.components.http import StaticPathConfig
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, Platform
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.typing import ConfigType
 
 from .api import BibkatClient
-from .const import CONF_CATALOG_ID, CONF_DEVICE_ID
+from .const import CONF_CATALOG_ID, CONF_DEVICE_ID, DOMAIN
 from .coordinator import BibkatCoordinator
 from .services import async_setup_services
 
 type BibkatConfigEntry = ConfigEntry[BibkatCoordinator]
 
 PLATFORMS = (Platform.SENSOR, Platform.CALENDAR)
+CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:

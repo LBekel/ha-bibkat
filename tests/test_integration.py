@@ -355,7 +355,8 @@ async def test_documented_markdown_card_shows_titles_dates_and_unavailable(
     readme = (Path(__file__).resolve().parents[1] / "README.md").read_text(
         encoding="utf-8"
     )
-    card = yaml.safe_load(readme.split("```yaml\n", 1)[1].split("```", 1)[0])
+    markdown_example = readme.split("### Basic dashboard example", 1)[1]
+    card = yaml.safe_load(markdown_example.split("```yaml\n", 1)[1].split("```", 1)[0])
     template = Template(
         card["content"].replace(
             "sensor.your_account_loan_list", entities["loan_list"]

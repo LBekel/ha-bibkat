@@ -3,6 +3,7 @@
   "name": "Bibkat",
   "codeowners": ["@lbekel"],
   "config_flow": true,
+  "dependencies": ["http"],
   "documentation": "https://github.com/lbekel/ha-bibkat",
   "integration_type": "service",
   "iot_class": "cloud_polling",

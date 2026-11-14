@@ -38,6 +38,7 @@ def test_manifest_and_hacs_metadata():
     assert manifest["version"] == "0.1.2"
     assert manifest["iot_class"] == "cloud_polling"
     assert manifest["config_flow"]
+    assert "http" in manifest["dependencies"]
     assert manifest["requirements"] == []
     assert manifest["codeowners"] == ["@lbekel"]
     assert hacs["homeassistant"] == "2026.10.4"
