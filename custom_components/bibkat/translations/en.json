@@ -56,7 +56,7 @@
   "services": {
     "renew": {
       "name": "Renew medium",
-      "description": "Request one renewal and verify its new due date. Administrator access required. This changes the library account and never retries the renewal. Not yet live-verified.",
+      "description": "Request one renewal and verify its new due date. Administrator access required. This changes the library account and never retries the renewal. Experimental; verified with the Baccum library.",
       "fields": {
         "config_entry_id": {"name": "Reader account", "description": "The Bibkat account that holds this loan."},
         "medium_id": {"name": "Medium ID", "description": "Copy medium_id from the loans attribute, not the ISBN."},

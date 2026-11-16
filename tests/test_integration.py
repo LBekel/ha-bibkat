@@ -136,6 +136,44 @@ async def test_empty_account_and_manual_update(hass, entry, mock_client):
     assert mock_client.async_get_loans.await_count == 2
 
 
+async def test_custom_card_resource_is_served(hass, entry, mock_client, hass_client):
+    await setup(hass, entry)
+    client = await hass_client()
+
+    response = await client.get("/bibkat/bibkat-loans-card.js")
+
+    assert response.status == 200
+    card = await response.text()
+    assert 'const CARD_TYPE = "bibkat-loans-card";' in card
+    assert "customElements.define(CARD_TYPE, BibkatLoansCard);" in card
+
+
+async def test_pending_status_is_exposed_in_loan_attributes(hass, entry, mock_client):
+    mock_client.async_get_loans.return_value = (
+        Loan(
+            "100",
+            "Example One",
+            "Author One",
+            date(2026, 11, 15),
+            None,
+            is_renewable=False,
+            is_pending=True,
+        ),
+    )
+    entities = await setup(hass, entry)
+
+    assert hass.states.get(entities["loan_list"]).attributes["loans"] == [
+        {
+            "medium_id": "100",
+            "title": "Example One",
+            "author": "Author One",
+            "due_date": "2026-11-15",
+            "is_renewable": False,
+            "is_pending": True,
+        }
+    ]
+
+
 async def test_calendar_timezones_boundaries_and_dst(hass, entry, loans, freezer):
     dt_util.set_default_time_zone(dt_util.get_time_zone("Europe/Berlin"))
     coordinator = BibkatCoordinator(hass, entry, AsyncMock())
@@ -317,7 +355,8 @@ async def test_documented_markdown_card_shows_titles_dates_and_unavailable(
     readme = (Path(__file__).resolve().parents[1] / "README.md").read_text(
         encoding="utf-8"
     )
-    card = yaml.safe_load(readme.split("```yaml\n", 1)[1].split("```", 1)[0])
+    markdown_example = readme.split("### Basic dashboard example", 1)[1]
+    card = yaml.safe_load(markdown_example.split("```yaml\n", 1)[1].split("```", 1)[0])
     template = Template(
         card["content"].replace(
             "sensor.your_account_loan_list", entities["loan_list"]

@@ -8,11 +8,6 @@ This project is independent of Bibkat and the library software provider.
 It uses an undocumented API; changes to the service may break the integration.
 Compatibility with all libraries is not guaranteed.
 
-> **Renewals: experimental.** The request and response format was reconstructed
-> from the Android client and tested with synthetic responses, but has not yet
-> been verified by performing a real renewal.
-> Calling `bibkat.renew` changes the library account.
-
 ## Features
 
 - UI-based setup with library search and reader account credentials.
@@ -34,8 +29,9 @@ automations or support reservations, account editing, or loan history queries.
 - An active reader account at a library available through Bibkat search.
 - Internet access to `https://eopac.net`.
 
-Library search, login, loan retrieval, and token refresh have been verified
-with the Baccum library. Other libraries may have different access requirements.
+Library search, login, loan retrieval, token refresh, and a single-item renewal
+have been verified with the Baccum library. Other libraries may have different
+access requirements.
 Only use the integration for accounts you are authorized to access, and follow
 your library's terms.
 
@@ -111,7 +107,27 @@ The full list is stored in the attribute, not in the sensor state, which is
 limited to 255 characters. Both loan lists use the same data without additional
 API requests.
 
-### Dashboard example
+### Dashboard card
+
+The integration serves an optional custom card at `/bibkat/bibkat-loans-card.js`.
+Register it once under **Settings > Dashboards > Resources** with resource type
+**JavaScript module**. The card can then be added from the dashboard card picker,
+or configured in YAML:
+
+```yaml
+type: custom:bibkat-loans-card
+entity: sensor.your_account_loan_list
+config_entry_id: "YOUR_BIBKAT_CONFIG_ENTRY_ID"
+```
+
+In the visual editor, select the loan-list sensor and its matching Bibkat reader
+account. An administrator account is required to request renewals. The card
+lists each loan and enables **Renew** only when Bibkat marks it renewable and no
+request is pending. It asks for confirmation before calling `bibkat.renew`. A
+failed or uncertain request is shown on the card; check Bibkat before trying
+again. The card does not renew loans automatically.
+
+### Basic dashboard example
 
 Add a **Markdown card** and replace `sensor.your_account_loan_list` with the
 actual entity ID:
@@ -149,7 +165,7 @@ time, a time-triggered automation can evaluate the `loans` attribute.
 ## Renewing a single item
 
 **This experimental action makes a real change to the library account.**
-It has not yet been verified with a real renewal.
+A real renewal has been verified with the Baccum library.
 
 1. Find the item's `medium_id` and `due_date` in the desired account's
    `loans` attribute.

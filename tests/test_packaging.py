@@ -38,6 +38,7 @@ def test_manifest_and_hacs_metadata():
     assert manifest["version"] == "0.1.2"
     assert manifest["iot_class"] == "cloud_polling"
     assert manifest["config_flow"]
+    assert "http" in manifest["dependencies"]
     assert manifest["requirements"] == []
     assert manifest["codeowners"] == ["@lbekel"]
     assert hacs["homeassistant"] == "2026.10.4"
@@ -46,6 +47,15 @@ def test_manifest_and_hacs_metadata():
         .read_bytes()
         .startswith(b"\x89PNG\r\n\x1a\n")
     )
+
+
+def test_custom_dashboard_card_is_included():
+    card = (INTEGRATION / "www" / "bibkat-loans-card.js").read_text(
+        encoding="utf-8"
+    )
+    assert 'const CARD_TYPE = "bibkat-loans-card";' in card
+    assert "customElements.define(CARD_TYPE, BibkatLoansCard);" in card
+    assert 'customElements.define("bibkat-loans-card-editor"' in card
 
 
 def test_renewal_action_fields_match_translations():
